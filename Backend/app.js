@@ -13,19 +13,8 @@ const smsRoutes = require('./routes/sms.routes');
 
 const app = express();
 
-// ✅ Setup dynamic CORS origins from environment variable
-const allowedOrigins = process.env.CLIENT_URL.split(',');
+app.use(cors());
 
-const corsOptions = {
-    origin: function(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true
-};
 
 connectToDb();
 
