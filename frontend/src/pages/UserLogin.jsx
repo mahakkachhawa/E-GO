@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserDataContext } from '../context/UserContext';
-import axios from 'axios';
 
 const UserLogin = () => {
   const [email, setEmail] = useState('');
@@ -9,27 +8,23 @@ const UserLogin = () => {
   const { setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
 
-    const userData = { email, password };
+    // Here you can set mock user data if needed
+    // For example:
+    // setUser({ email });
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData);
+    // Redirect to /home without backend call
+    navigate('/home');
 
-    if (response.status === 200) {
-      const data = response.data;
-      setUser(data.user);
-      localStorage.setItem('token', data.token);
-      navigate('/home');
-    }
-
+    // Clear input fields
     setEmail('');
     setPassword('');
   };
 
   return (
-    <div className="min-h-screen w-full flex  bg-white overflow-y-hidden">
-      
+    <div className="min-h-screen w-full flex bg-white overflow-y-hidden">
       <div className="hidden md:flex w-3/4 bg-white items-center justify-center mt-6">
         <img
           src="login_user_logo.gif"
@@ -38,10 +33,8 @@ const UserLogin = () => {
         />
       </div>
 
-      
       <div className="w-full md:w-1/2 flex items-center justify-center mt-14 mr-10">
         <div className="bg-white rounded-2xl shadow-lg shadow-gray-600 p-10 w-[90%] max-w-[400px]">
-         
           <div className="flex justify-center mb-6">
             <img
               src="e-go_logo2.png"
@@ -50,10 +43,8 @@ const UserLogin = () => {
             />
           </div>
 
-      
           <h2 className="text-2xl font-semibold text-center mb-6">Welcome back :)</h2>
 
-          
           <form onSubmit={submitHandler}>
             <label className="block mb-2 font-medium">Email Address</label>
             <input
