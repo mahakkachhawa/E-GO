@@ -1,9 +1,8 @@
 const dotenv = require('dotenv');
-const twilio = require('twilio');
 dotenv.config();
+
 const express = require('express');
 const cors = require('cors');
-const app = express();
 const cookieParser = require('cookie-parser');
 const connectToDb = require('./db/db');
 const userRoutes = require('./routes/user.routes');
@@ -12,21 +11,19 @@ const mapsRoutes = require('./routes/maps.routes');
 const rideRoutes = require('./routes/ride.routes');
 const smsRoutes = require('./routes/sms.routes');
 
-const corsOptions = {
-    origin: "http://localhost:5173",  // ✅ Allow frontend access
-    credentials: true, // ✅ Allow cookies if needed
-  };
-  
+const app = express();
+
+app.use(cors());
+
 
 connectToDb();
 
-app.use(cors(corsOptions)); 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use('/sms', smsRoutes);  // ✅ Add Twilio Route
 
-
+app.use('/sms', smsRoutes); // ✅ Add Twilio Route
 
 app.get('/', (req, res) => {
     res.send('Hello World');
@@ -49,8 +46,5 @@ app.use('/users', userRoutes);
 app.use('/captains', captainRoutes);
 app.use('/maps', mapsRoutes);
 app.use('/rides', rideRoutes);
-
-
-
 
 module.exports = app;

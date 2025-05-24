@@ -1,7 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { UserDataContext } from '../context/UserContext';
 
 const UserSignup = () => {
   const [email, setEmail] = useState('');
@@ -9,28 +7,13 @@ const UserSignup = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const navigate = useNavigate();
-  const { setUser } = useContext(UserDataContext);
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    const newUser = {
-      fullname: {
-        firstname: firstName,
-        lastname: lastName,
-      },
-      email,
-      password,
-    };
+    // Skip backend call, directly navigate to ride page
+    navigate('/home');
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
-
-    if (response.status === 201) {
-      const data = response.data;
-      setUser(data.user);
-      localStorage.setItem('token', data.token);
-      navigate('/home');
-    }
-
+    // Optionally reset form fields if needed
     setEmail('');
     setFirstName('');
     setLastName('');
@@ -39,7 +22,6 @@ const UserSignup = () => {
 
   return (
     <div className="min-h-screen w-full flex overflow-y-hidden bg-white">
-      
       <div className="hidden md:flex w-3/4 bg-white items-center justify-center mt-14">
         <img
           src="user_signup.jpg"
@@ -48,10 +30,8 @@ const UserSignup = () => {
         />
       </div>
 
-      
       <div className="w-full md:w-1/2 flex items-center justify-center mr-10 mb-3 mt-16">
         <div className="bg-white rounded-2xl shadow-lg shadow-gray-600 p-10 w-[85%] max-w-[400px] h-[90%]">
-         
           <div className="flex justify-center mb-2">
             <img
               src="e-go_logo2.png"
@@ -60,10 +40,8 @@ const UserSignup = () => {
             />
           </div>
 
-          
           <h2 className="text-2xl font-semibold text-center  mb-6">Welcome to E-GO Family</h2>
 
-         
           <form onSubmit={submitHandler}>
             <label className="block mb-2 font-medium">What's your name?</label>
             <div className="flex gap-4 mb-5">
